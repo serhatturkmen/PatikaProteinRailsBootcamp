@@ -1,0 +1,21 @@
+<p>
+<h1>
+
+  <%= @post.title %>
+</h1>
+</p>
+<p>
+<h3>
+  <%= @post.content %>
+</h3>
+</p>
+<p>
+  <%= @post.user.username %>  |   <%= @post.created_at %>
+</p>
+
+<br>
+
+<% if current_user == @post.user_id %>
+  <%= link_to 'Edit', edit_post_path(@post) %> |
+<% end %>
+<%= link_to 'Back', posts_path %>
