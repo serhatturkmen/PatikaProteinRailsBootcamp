@@ -1,16 +1,12 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[show edit update destroy]
-  before_action :authenticate_user!, only: %i[index show edit update destroy]
+  before_action :set_post, only: %i[ show edit update destroy vote_add vote_reduce ]
+  before_action :authenticate_user!
   before_action :check_user, only: %i[edit update destroy]
-
-  # GET /posts or /posts.json
-  def index
-    @posts = current_user.posts.all
-  end
 
   # GET /posts/1 or /posts/1.json
   def show
-    @comments = @post.comments.accepteds
+    @comments = @post.comments.accepted
+    @user_comment = @post.comments.where(user_id: current_user).where(status: 0)
   end
 
   # GET /posts/new
@@ -19,7 +15,8 @@ class PostsController < ApplicationController
   end
 
   # GET /posts/1/edit
-  def edit; end
+  def edit
+  end
 
   # POST /posts or /posts.json
   def create
@@ -58,12 +55,26 @@ class PostsController < ApplicationController
     end
   end
 
+  def vote_add
+    @post.update(vote_count: @post.vote_count + 1)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def vote_reduce
+    @post.update(vote_count: @post.vote_count - 1)
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
 
   def check_user
     unless @post.user == current_user
       respond_to do |format|
-        format.html { redirect_to dashboard_path, notice: "You are not login." }
+        format.html { redirect_to dashboard_path, notice: "You shall not pass." }
       end
     end
   end

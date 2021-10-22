@@ -4,10 +4,12 @@ one:
   title: MyString
   content: MyText
   user_id: 1
-  post_id: MyString
+  post_id: 1
+  accept: false
 
 two:
   title: MyString
   content: MyText
   user_id: 1
-  post_id: MyString
+  post_id: 1
+  accept: false

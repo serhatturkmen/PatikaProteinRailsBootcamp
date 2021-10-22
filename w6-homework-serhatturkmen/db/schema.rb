@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_15_124633) do
+ActiveRecord::Schema.define(version: 2021_10_22_104042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,10 +19,11 @@ ActiveRecord::Schema.define(version: 2021_10_15_124633) do
     t.string "title", null: false
     t.text "content", null: false
     t.integer "user_id"
-    t.string "post_id"
+    t.integer "post_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "accept", default: false
+    t.integer "status", default: 0
+    t.boolean "locked", default: false
   end
 
   create_table "posts", force: :cascade do |t|
@@ -32,11 +33,19 @@ ActiveRecord::Schema.define(version: 2021_10_15_124633) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
+    t.integer "vote_count", default: 0
+  end
+
+  create_table "relationships", force: :cascade do |t|
+    t.integer "follower_id"
+    t.integer "followed_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username", default: "", null: false
     t.string "email", default: "", null: false
+    t.string "username", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
